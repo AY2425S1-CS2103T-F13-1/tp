@@ -6,12 +6,13 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.person.Person;
+import seedu.address.model.student.Student;
 
 /**
  * Adds a person to the address book.
@@ -20,37 +21,69 @@ public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the address book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a student to the system. "
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
             + PREFIX_EMAIL + "EMAIL "
             + PREFIX_ADDRESS + "ADDRESS "
+            + PREFIX_COURSE + "COURSES "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
             + PREFIX_EMAIL + "johnd@example.com "
             + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
+            + PREFIX_COURSE + "CS2103T, CS2100 "
             + PREFIX_TAG + "friends "
             + PREFIX_TAG + "owesMoney";
 
-    public static final String MESSAGE_SUCCESS = "New person added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
+    public static final String MESSAGE_SUCCESS = "New student added: %1$s";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This student already exists in the system";
+    public static final String MESSAGE_INVALID_COURSE_LIST = "Invalid course list. Ensure course codes are in the format of two letters followed by four digits.";
 
-    private final Person toAdd;
+    private final Student toAdd;
 
     /**
      * Creates an AddCommand to add the specified {@code Person}
      */
-    public AddCommand(Person person) {
+    public AddCommand(Student person) {
         requireNonNull(person);
         toAdd = person;
     }
 
+    /**
+     * Validates the course list.
+     * Each course code should follow the format of two letters followed by four digits.
+     * 
+     * @param courses A string representing the comma-separated list of courses.
+     * @return true if all courses are valid, false otherwise.
+     */
+    private boolean isValidCourseList(String courses) {
+        // Remove spaces and split the list by commas
+        String[] courseList = courses.trim().split("\\s*,\\s*");
+
+        // Regex for valid course code: Two letters followed by four digits
+        String courseCodePattern = "^[a-zA-Z]{2}\\d{4}$";
+
+        // Check each course against the pattern
+        for (String course : courseList) {
+            if (!course.matches(courseCodePattern)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+
+        // TODO: validate course list here
+        // if (!isValidCourseList(toAdd.getCourses())) {
+        //     throw new CommandException(MESSAGE_INVALID_COURSE_LIST);
+        // }
 
         if (model.hasPerson(toAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
