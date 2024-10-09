@@ -9,7 +9,6 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  * Guarantees: immutable; is valid as declared in {@link #isValidCourse(String)}
  */
 public class Course {
-
     public static final String MESSAGE_CONSTRAINTS = "Courses should be in the format of two letters "
         + "followed by four digits, e.g., CS2103T.";
     /*
