@@ -2,11 +2,11 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
@@ -40,7 +40,8 @@ public class AddCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New student added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This student already exists in the system";
-    public static final String MESSAGE_INVALID_COURSE_LIST = "Invalid course list. Ensure course codes are in the format of two letters followed by four digits.";
+    public static final String MESSAGE_INVALID_COURSE_LIST = "Invalid course list. Ensure course "
+        + "codes are in the format of two letters followed by four digits.";
 
     private final Student toAdd;
 
@@ -55,7 +56,6 @@ public class AddCommand extends Command {
     /**
      * Validates the course list.
      * Each course code should follow the format of two letters followed by four digits.
-     * 
      * @param courses A string representing the comma-separated list of courses.
      * @return true if all courses are valid, false otherwise.
      */

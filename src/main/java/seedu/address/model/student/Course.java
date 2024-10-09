@@ -8,9 +8,8 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  * Guarantees: immutable; is valid as declared in {@link #isValidCourse(String)}
  */
 public class Course {
-
-    public static final String MESSAGE_CONSTRAINTS = "Courses should be in the format of two letters followed by four digits, e.g., CS2103T.";
-    
+    public static final String MESSAGE_CONSTRAINTS = "Courses should be in the format of two letters "
+        + "followed by four digits, e.g., CS2103T.";
     /*
      * The course code must follow the format of two letters followed by four digits.
      * It can optionally have a trailing letter. E.g., "CS2103T", "cs2100".

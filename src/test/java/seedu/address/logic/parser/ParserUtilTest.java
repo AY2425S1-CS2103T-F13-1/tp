@@ -14,12 +14,12 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.course.Course;
 import seedu.address.model.student.Address;
 import seedu.address.model.student.Email;
 import seedu.address.model.student.Name;
 import seedu.address.model.student.Phone;
 import seedu.address.model.tag.Tag;
-import seedu.address.model.course.Course;
 
 public class ParserUtilTest {
     private static final String INVALID_NAME = "R@chel";
@@ -35,9 +35,8 @@ public class ParserUtilTest {
     private static final String VALID_EMAIL = "rachel@example.com";
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
-    private static final String VALID_COURSE_1 = "CS2103T"; 
+    private static final String VALID_COURSE_1 = "CS2103T";
     private static final String VALID_COURSE_2 = "CS2100";
-
     private static final String WHITESPACE = " \t\r\n";
 
     @Test
@@ -228,7 +227,8 @@ public class ParserUtilTest {
 
     @Test
     public void parseCourses_collectionWithInvalidCourses_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseCourses(Arrays.asList(VALID_COURSE_1, INVALID_COURSE)));
+        assertThrows(ParseException.class, () ->
+            ParserUtil.parseCourses(Arrays.asList(VALID_COURSE_1, INVALID_COURSE)));
     }
 
     @Test
@@ -239,7 +239,9 @@ public class ParserUtilTest {
     @Test
     public void parseCourses_collectionWithValidCourses_returnsCourseSet() throws Exception {
         Set<Course> actualCourseSet = ParserUtil.parseCourses(Arrays.asList(VALID_COURSE_1, VALID_COURSE_2));
-        Set<Course> expectedCourseSet = new HashSet<>(Arrays.asList(new Course(VALID_COURSE_1), new Course(VALID_COURSE_2)));
+        Course course1 = new Course(VALID_COURSE_1);
+        Course course2 = new Course(VALID_COURSE_2);
+        Set<Course> expectedCourseSet = new HashSet<>(Arrays.asList(course1, course2));
 
         assertEquals(expectedCourseSet, actualCourseSet);
     }
