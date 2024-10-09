@@ -2,7 +2,19 @@
 /.gradle/
 /build/
 src/main/resources/docs/
-build.gradle
+
+# Ignore Gradle wrapper jar files
+/gradle/wrapper/gradle-wrapper.jar
+/gradle/wrapper/gradle-wrapper.properties
+
+# Ignore generated Gradle files
+/bin/
+
+# Ignore other Gradle-related files
+gradlew
+gradlew.bat
+*.gradle
+gradle.properties
 
 # IDEA files
 /.idea/
@@ -22,5 +34,3 @@ src/test/data/sandbox/
 # MacOS custom attributes files created by Finder
 .DS_Store
 docs/_site/
-
-bin/
