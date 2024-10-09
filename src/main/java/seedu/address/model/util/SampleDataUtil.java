@@ -10,9 +10,13 @@ import seedu.address.model.course.Course;
 import seedu.address.model.student.Address;
 import seedu.address.model.student.Email;
 import seedu.address.model.student.Name;
-import seedu.address.model.student.Phone;
 import seedu.address.model.student.Student;
+<<<<<<< HEAD
+=======
+import seedu.address.model.student.Phone;
+>>>>>>> parent of ec0de729 (edit tests)
 import seedu.address.model.tag.Tag;
+import seedu.address.model.course.Course;
 
 /**
  * Contains utility methods for populating {@code AddressBook} with sample data.

@@ -7,9 +7,17 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+<<<<<<< HEAD
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.course.Course;
 import seedu.address.model.tag.Tag;
+=======
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.tag.Tag;
+import seedu.address.model.course.Course;
+
+>>>>>>> parent of ec0de729 (edit tests)
 /**
  * Represents a Person in the address book.
  * Guarantees: details are present and not null, field values are validated, immutable.
@@ -97,11 +105,19 @@ public class Student {
 
         Student otherPerson = (Student) other;
         return name.equals(otherPerson.name)
+<<<<<<< HEAD
             && phone.equals(otherPerson.phone)
             && email.equals(otherPerson.email)
             && address.equals(otherPerson.address)
             && tags.equals(otherPerson.tags)
             && courses.equals(otherPerson.courses);
+=======
+                && phone.equals(otherPerson.phone)
+                && email.equals(otherPerson.email)
+                && address.equals(otherPerson.address)
+                && tags.equals(otherPerson.tags)
+                && courses.equals(otherPerson.courses); 
+>>>>>>> parent of ec0de729 (edit tests)
     }
 
     @Override

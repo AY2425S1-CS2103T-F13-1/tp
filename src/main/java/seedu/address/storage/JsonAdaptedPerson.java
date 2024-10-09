@@ -15,8 +15,12 @@ import seedu.address.model.student.Address;
 import seedu.address.model.student.Email;
 import seedu.address.model.student.Name;
 import seedu.address.model.student.Phone;
+<<<<<<< HEAD
 import seedu.address.model.student.Student;
+=======
+>>>>>>> parent of ec0de729 (edit tests)
 import seedu.address.model.tag.Tag;
+import seedu.address.model.course.Course;
 /**
  * Jackson-friendly version of {@link Student}.
  */

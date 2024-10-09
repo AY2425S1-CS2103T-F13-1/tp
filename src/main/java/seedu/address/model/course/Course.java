@@ -9,8 +9,13 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Course {
 
+<<<<<<< HEAD
     public static final String MESSAGE_CONSTRAINTS = "Courses should be in the format of two letters "
         + "followed by four digits, e.g., CS2103T.";
+=======
+    public static final String MESSAGE_CONSTRAINTS = "Courses should be in the format of two letters followed by four digits, e.g., CS2103T.";
+    
+>>>>>>> parent of ec0de729 (edit tests)
     /*
      * The course code must follow the format of two letters followed by four digits.
      * It can optionally have a trailing letter. E.g., "CS2103T", "cs2100".

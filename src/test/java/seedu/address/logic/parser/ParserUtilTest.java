@@ -20,6 +20,7 @@ import seedu.address.model.student.Email;
 import seedu.address.model.student.Name;
 import seedu.address.model.student.Phone;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.course.Course;
 
 public class ParserUtilTest {
     private static final String INVALID_NAME = "R@chel";
