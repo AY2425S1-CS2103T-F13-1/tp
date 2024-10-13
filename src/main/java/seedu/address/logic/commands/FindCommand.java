@@ -2,10 +2,10 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import seedu.address.commons.util.ToStringBuilder;
+import java.util.function.Predicate;
+
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
-import seedu.address.model.student.NameContainsKeywordsPredicate;
 
 /**
  * Finds and lists all persons in address book whose name contains any of the argument keywords.
@@ -15,14 +15,14 @@ public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain any of "
-            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " alice bob charlie";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose attributes satisfy "
+            + "all of the specified search criteria and displays them as a list with index numbers.\n"
+            + "Parameters: [n/NAME] [c/COURSE]...\n"
+            + "Example: " + COMMAND_WORD + " n/alice c/CS2103T";
 
-    private final NameContainsKeywordsPredicate predicate;
+    private final Predicate predicate;
 
-    public FindCommand(NameContainsKeywordsPredicate predicate) {
+    public FindCommand(Predicate predicate) {
         this.predicate = predicate;
     }
 
@@ -36,23 +36,8 @@ public class FindCommand extends Command {
 
     @Override
     public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        // instanceof handles nulls
-        if (!(other instanceof FindCommand)) {
-            return false;
-        }
-
-        FindCommand otherFindCommand = (FindCommand) other;
-        return predicate.equals(otherFindCommand.predicate);
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .add("predicate", predicate)
-                .toString();
+        return other == this // short circuit if same object
+                || (other instanceof FindCommand // instanceof handles nulls
+                && predicate.equals(((FindCommand) other).predicate)); // state check
     }
 }
