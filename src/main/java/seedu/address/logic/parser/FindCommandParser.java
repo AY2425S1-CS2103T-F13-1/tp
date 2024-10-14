@@ -4,6 +4,8 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -32,17 +34,22 @@ public class FindCommandParser implements Parser<FindCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
-        Predicate<Student> predicate = person -> true;
+        List<Predicate<Student>> predicates = new ArrayList<>();
 
         if (arePrefixesPresent(argMultimap, PREFIX_NAME)) {
-            predicate = predicate.and(new NameContainsKeywordsPredicate(argMultimap.getAllValues(PREFIX_NAME)));
+            NameContainsKeywordsPredicate namePredicate =
+                    new NameContainsKeywordsPredicate(argMultimap.getAllValues(PREFIX_NAME));
+            predicates.add(namePredicate);
         }
 
         if (arePrefixesPresent(argMultimap, PREFIX_COURSE)) {
-            predicate = predicate.and(new CourseContainsKeywordsPredicate(argMultimap.getAllValues(PREFIX_COURSE)));
+            CourseContainsKeywordsPredicate coursePredicate =
+                    new CourseContainsKeywordsPredicate(argMultimap.getAllValues(PREFIX_COURSE));
+            predicates.add(coursePredicate);
         }
 
-        return new FindCommand(predicate);
+        Predicate<Student> finalPredicate = predicates.stream().reduce(x -> true, Predicate::and);
+        return new FindCommand(finalPredicate);
     }
 
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
