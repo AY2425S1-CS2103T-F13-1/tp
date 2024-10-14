@@ -12,15 +12,16 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.util.Arrays;
 import java.util.Collections;
-//import java.util.function.Predicate;
+import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.student.CourseContainsKeywordsPredicate;
 import seedu.address.model.student.NameContainsKeywordsPredicate;
-//import seedu.address.model.student.Student;
+import seedu.address.model.student.Student;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FindCommand}.
@@ -69,20 +70,13 @@ public class FindCommandTest {
     @Test
     public void execute_multipleKeywords_multiplePersonsFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
-        NameContainsKeywordsPredicate predicate = preparePredicate("Kurz Elle Kunz");
-        FindCommand command = new FindCommand(predicate);
-        expectedModel.updateFilteredPersonList(predicate);
+        NameContainsKeywordsPredicate namePredicate = new NameContainsKeywordsPredicate(
+                Arrays.asList("Kurz", "Elle", "Kunz"));
+        FindCommand command = new FindCommand(namePredicate);
+        expectedModel.updateFilteredPersonList(namePredicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Arrays.asList(CARL, ELLE, FIONA), model.getFilteredPersonList());
     }
-
-    //    @Test
-    //    public void toStringMethod() {
-    //        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(Arrays.asList("keyword"));
-    //        FindCommand findCommand = new FindCommand(predicate);
-    //        String expected = FindCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
-    //        assertEquals(expected, findCommand.toString());
-    //    }
 
     @Test
     public void toStringMethod() {
@@ -97,18 +91,22 @@ public class FindCommandTest {
     }
 
 
-    //    @Test
-    //    public void execute_nameAndCourseCriteria_personFound() {
-    //        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
-    //        NameContainsKeywordsPredicate namePredicate = preparePredicate("Kurz");
-    //        CourseContainsKeywordsPredicate coursePredicate =
-    //        new CourseContainsKeywordsPredicate(Arrays.asList("CS2103T"));
-    //        Predicate<Student> combinedPredicate = namePredicate.and(coursePredicate);
-    //        FindCommand command = new FindCommand(combinedPredicate);
-    //        expectedModel.updateFilteredPersonList(combinedPredicate);
-    //        assertCommandSuccess(command, model, expectedMessage, expectedModel);
-    //        assertEquals(Arrays.asList(CARL), model.getFilteredPersonList());
-    //    }
+    @Test
+    public void execute_nameAndCourseCriteria_personFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        NameContainsKeywordsPredicate namePredicate = new NameContainsKeywordsPredicate(Arrays.asList("Kurz"));
+        CourseContainsKeywordsPredicate coursePredicate = new CourseContainsKeywordsPredicate(Arrays.asList("CS2103T"));
+        Predicate<Student> combinedPredicate = namePredicate.and(coursePredicate);
+        FindCommand command = new FindCommand(combinedPredicate);
+        expectedModel.updateFilteredPersonList(combinedPredicate);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+
+        assertEquals(1, model.getFilteredPersonList().size());
+        Student foundStudent = model.getFilteredPersonList().get(0);
+        assertTrue(foundStudent.getName().fullName.toLowerCase().contains("kurz"));
+        assertTrue(foundStudent.getCourses().stream()
+                .anyMatch(course -> course.courseCode.equalsIgnoreCase("CS2103T")));
+    }
 
     /**
      * Parses {@code userInput} into a {@code NameContainsKeywordsPredicate}.
