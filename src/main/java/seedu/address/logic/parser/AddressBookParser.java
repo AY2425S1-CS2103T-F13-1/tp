@@ -68,7 +68,7 @@ public class AddressBookParser {
 
         case RemoveFromConsultCommand.COMMAND_WORD:
             return new RemoveFromConsultCommandParser().parse(arguments);
-            
+
         case AddToConsultCommand.COMMAND_WORD:
             return new AddToConsultCommandParser().parse(arguments);
 
