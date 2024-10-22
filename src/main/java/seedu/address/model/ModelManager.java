@@ -26,6 +26,7 @@ public class ModelManager implements Model {
     private final UserPrefs userPrefs;
     private final FilteredList<Student> filteredStudents;
     private final FilteredList<Consultation> filteredConsultations;
+    private final FilteredList<Consultation> filteredConsultations;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -38,7 +39,7 @@ public class ModelManager implements Model {
         this.addressBook = new AddressBook(addressBook);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredStudents = new FilteredList<>(this.addressBook.getStudentList());
-        filteredConsultations = new FilteredList<>(this.addressBook.getConsultList());
+        filteredConsultations = new FilteredList<>(this.addressBook.getConsultList()); 
     }
 
     public ModelManager() {
@@ -112,16 +113,11 @@ public class ModelManager implements Model {
     @Override
     public void setStudent(Student target, Student editedStudent) {
         requireAllNonNull(target, editedStudent);
-
         addressBook.setStudent(target, editedStudent);
     }
 
     //=========== Filtered Student List Accessors =============================================================
 
-    /**
-     * Returns an unmodifiable view of the list of {@code Student} backed by the internal list of
-     * {@code versionedAddressBook}
-     */
     @Override
     public ObservableList<Student> getFilteredStudentList() {
         return filteredStudents;
@@ -133,33 +129,11 @@ public class ModelManager implements Model {
         filteredStudents.setPredicate(predicate);
     }
 
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        // instanceof handles nulls
-        if (!(other instanceof ModelManager)) {
-            return false;
-        }
-
-        ModelManager otherModelManager = (ModelManager) other;
-        return addressBook.equals(otherModelManager.addressBook)
-                && userPrefs.equals(otherModelManager.userPrefs)
-                && filteredStudents.equals(otherModelManager.filteredStudents);
-    }
-
-    // ========== Consultation Commands ==========
+    //=========== Consultation Methods =============================================================
 
     @Override
-    public void addConsult(Consultation consult) {
-        addressBook.addConsult(consult);
-    }
-
-    @Override
-    public boolean hasConsult(Consultation consult) {
-        return addressBook.hasConsult(consult);
+    public ObservableList<Consultation> getFilteredConsultationList() {
+        return filteredConsultations; // Return the filtered consultations list
     }
 
     @Override
@@ -171,8 +145,28 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public ObservableList<Consultation> getFilteredConsultationList() {
-        return filteredConsultations; // Return the filtered consultations list
+    public void addConsult(Consultation consult) {
+        addressBook.addConsult(consult);
     }
 
+    @Override
+    public boolean hasConsult(Consultation consult) {
+        return addressBook.hasConsult(consult);
+    }
+
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        if (!(other instanceof ModelManager)) {
+            return false;
+        }
+
+        ModelManager otherModelManager = (ModelManager) other;
+        return addressBook.equals(otherModelManager.addressBook)
+                && userPrefs.equals(otherModelManager.userPrefs)
+                && filteredStudents.equals(otherModelManager.filteredStudents)
+                && filteredConsultations.equals(otherModelManager.filteredConsultations); // Include consultation list
+    }
 }
