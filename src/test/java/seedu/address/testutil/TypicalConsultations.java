@@ -18,24 +18,29 @@ public class TypicalConsultations {
     public static final Consultation CONSULT_1 = new ConsultationBuilder()
             .withDate("2024-10-21")
             .withTime("10:00")
+            .withCourse("CS1010X")
             .withStudent(ALICE).build();
     public static final Consultation CONSULT_2 = new ConsultationBuilder()
             .withDate("2024-10-23")
             .withTime("10:30")
+            .withCourse("CS2030S")
             .withStudent(BENSON).build();
     public static final Consultation CONSULT_3 = new ConsultationBuilder()
             .withDate("2024-10-25")
             .withTime("11:30")
+            .withCourse("CS2100")
             .withStudent(CARL).build();
     public static final Consultation CONSULT_4 = new ConsultationBuilder()
             .withDate("2024-10-27")
             .withTime("13:00")
+            .withCourse("CS2040S")
             .withStudent(ALICE)
             .withStudent(BENSON)
             .withStudent(CARL).build();
     public static final Consultation CONSULT_5 = new ConsultationBuilder()
             .withDate("2024-10-29")
-            .withTime("15:30").build();
+            .withTime("15:30")
+            .withCourse("CS3230").build();
 
     private TypicalConsultations() {} // prevents instantiation
 

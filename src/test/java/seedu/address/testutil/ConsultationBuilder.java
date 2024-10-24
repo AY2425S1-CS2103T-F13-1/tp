@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import seedu.address.model.consultation.Consultation;
 import seedu.address.model.consultation.Date;
 import seedu.address.model.consultation.Time;
+import seedu.address.model.course.Course;
 import seedu.address.model.student.Student;
 
 /**
@@ -17,9 +18,11 @@ public class ConsultationBuilder {
     public static final String DEFAULT_DATE = "2024-10-20";
     public static final String DEFAULT_TIME = "14:00";
     public static final String DEFAULT_NAMES = "";
+    public static final String DEFAULT_COURSE = "CS2103T";
     private Date date;
     private Time time;
     private final ArrayList<Student> students;
+    private Course course;
 
     /**
      * Creates a {@code ConsultationBuilder} with the default details.
@@ -27,6 +30,7 @@ public class ConsultationBuilder {
     public ConsultationBuilder() {
         date = new Date(DEFAULT_DATE);
         time = new Time(DEFAULT_TIME);
+        course = new Course(DEFAULT_COURSE);
         students = new ArrayList<>();
     }
 
@@ -36,6 +40,7 @@ public class ConsultationBuilder {
     public ConsultationBuilder(Consultation consultationToCopy) {
         date = consultationToCopy.getDate();
         time = consultationToCopy.getTime();
+        course = consultationToCopy.getCourse();
         students = new ArrayList<>(consultationToCopy.getStudents());
     }
 
@@ -56,6 +61,14 @@ public class ConsultationBuilder {
     }
 
     /**
+     * Sets the {@code Time} of the {@code Consultation} that we are building.
+     */
+    public ConsultationBuilder withCourse(String course) {
+        this.course = new Course(course);
+        return this;
+    }
+
+    /**
      * Sets the {@code Student} of the {@code Consultation} that we are building.
      */
     public ConsultationBuilder withStudent(Student student) {
@@ -65,7 +78,7 @@ public class ConsultationBuilder {
     }
 
     public Consultation build() {
-        return new Consultation(date, time, students);
+        return new Consultation(date, time, course, students);
     }
 
 }

@@ -1,6 +1,7 @@
 package seedu.address.logic.parser.consultation;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
 
@@ -15,6 +16,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.consultation.Consultation;
 import seedu.address.model.consultation.Date;
 import seedu.address.model.consultation.Time;
+import seedu.address.model.course.Course;
 
 /**
  * Parses input arguments and creates a new AddCommand object
@@ -27,19 +29,20 @@ public class AddConsultCommandParser implements Parser<AddConsultCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public AddConsultCommand parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_DATE, PREFIX_TIME);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_DATE, PREFIX_TIME, PREFIX_COURSE);
 
-        if (!argMultimap.arePrefixesPresent(PREFIX_DATE, PREFIX_TIME)
+        if (!argMultimap.arePrefixesPresent(PREFIX_DATE, PREFIX_TIME, PREFIX_COURSE)
             || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     AddConsultCommand.MESSAGE_USAGE));
         }
 
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_DATE, PREFIX_TIME);
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_DATE, PREFIX_TIME, PREFIX_COURSE);
         Date date = ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE).get());
         Time time = ParserUtil.parseTime(argMultimap.getValue(PREFIX_TIME).get());
+        Course course = ParserUtil.parseCourse(argMultimap.getValue(PREFIX_COURSE).get());
 
-        Consultation consult = new Consultation(date, time, List.of());
+        Consultation consult = new Consultation(date, time, course, List.of());
 
         return new AddConsultCommand(consult);
     }

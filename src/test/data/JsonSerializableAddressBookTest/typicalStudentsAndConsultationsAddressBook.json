@@ -39,6 +39,7 @@
   "consults" : [ {
     "date" : "2024-10-21",
     "time" : "10:00",
+    "course": "CS1010X",
     "students" : [ {
       "name" : "Alice Pauline",
       "phone" : "94351253",
@@ -48,6 +49,7 @@
   }, {
     "date" : "2024-10-23",
     "time" : "10:30",
+    "course": "CS2030S",
     "students" : [ {
       "name" : "Benson Meier",
       "phone" : "98765432",
@@ -57,6 +59,7 @@
   }, {
     "date" : "2024-10-25",
     "time" : "11:30",
+    "course": "CS2100",
     "students" : [ {
       "name" : "Carl Kurz",
       "phone" : "95352563",
@@ -66,6 +69,7 @@
   }, {
     "date" : "2024-10-27",
     "time" : "13:00",
+    "course": "CS2040S",
     "students" : [ {
       "name" : "Alice Pauline",
       "phone" : "94351253",
@@ -85,6 +89,7 @@
   },{
     "date" : "2024-10-29",
     "time" : "15:30",
+    "course": "CS3230",
     "students" : [ ]
   } ]
 }

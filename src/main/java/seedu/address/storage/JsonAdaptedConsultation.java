@@ -11,6 +11,7 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.consultation.Consultation;
 import seedu.address.model.consultation.Date;
 import seedu.address.model.consultation.Time;
+import seedu.address.model.course.Course;
 import seedu.address.model.student.Student;
 
 /**
@@ -23,6 +24,7 @@ class JsonAdaptedConsultation {
             "Student %s does not exist in TAHub, or details do not match!";
     private final String date;
     private final String time;
+    private final String course;
     private final List<JsonAdaptedStudent> students = new ArrayList<>();
 
     /**
@@ -30,9 +32,11 @@ class JsonAdaptedConsultation {
      */
     @JsonCreator
     public JsonAdaptedConsultation(@JsonProperty("date") String date, @JsonProperty("time") String time,
+                                   @JsonProperty("course") String course,
                                    @JsonProperty("students") List<JsonAdaptedStudent> students) {
         this.date = date;
         this.time = time;
+        this.course = course;
         if (students != null) {
             this.students.addAll(students);
         }
@@ -44,6 +48,7 @@ class JsonAdaptedConsultation {
     public JsonAdaptedConsultation(Consultation consult) {
         date = consult.getDate().getValue();
         time = consult.getTime().getValue();
+        course = consult.getCourse().toString();
         students.addAll(consult.getStudents().stream()
                 .map(JsonAdaptedStudent::new)
                 .toList());
@@ -73,6 +78,15 @@ class JsonAdaptedConsultation {
         }
         final Time modelTime = new Time(time);
 
+        if (course == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Course.class.getSimpleName()));
+        }
+        if (!Course.isValidCourse(course)) {
+            throw new IllegalValueException(Course.MESSAGE_CONSTRAINTS);
+        }
+
+        final Course modelCourse = new Course(course);
+
         final List<Student> modelStudents = new ArrayList<>();
 
         for (JsonAdaptedStudent student : students) {
@@ -85,7 +99,7 @@ class JsonAdaptedConsultation {
             modelStudents.add(modelStudent);
         }
 
-        return new Consultation(modelDate, modelTime, modelStudents);
+        return new Consultation(modelDate, modelTime, modelCourse, modelStudents);
     }
 
 }

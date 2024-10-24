@@ -1,6 +1,7 @@
 package seedu.address.logic.commands.consultation;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
 
@@ -25,9 +26,11 @@ public class AddConsultCommand extends Command {
             + "Parameters: "
             + PREFIX_DATE + "DATE "
             + PREFIX_TIME + "TIME "
+            + PREFIX_COURSE + "Course"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_DATE + "2024-10-20 "
-            + PREFIX_TIME + "14:00 ";
+            + PREFIX_TIME + "14:00 "
+            + PREFIX_COURSE + "CS2103T";
 
     public static final String MESSAGE_SUCCESS = "New consult added: %1$s";
 

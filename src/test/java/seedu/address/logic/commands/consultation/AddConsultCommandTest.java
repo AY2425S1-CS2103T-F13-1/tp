@@ -59,8 +59,30 @@ public class AddConsultCommandTest {
         // null -> returns false
         assertFalse(addJan1stConsult.equals(null));
 
-        // different student -> returns false
+        // different date -> returns false
         assertFalse(addJan1stConsult.equals(addFeb2ndConsult));
+
+        Consultation consultCS2103T = new ConsultationBuilder().withCourse("CS2103T").build();
+        Consultation consultCS2040S = new ConsultationBuilder().withCourse("CS2040S").build();
+
+        AddConsultCommand addCS2103TConsult = new AddConsultCommand(consultCS2103T);
+        AddConsultCommand addCS2040SConsult = new AddConsultCommand(consultCS2040S);
+
+        // same object -> returns true
+        assertTrue(addCS2103TConsult.equals(addCS2103TConsult));
+
+        // same values -> returns true
+        AddConsultCommand addCS2040SConsultCopy = new AddConsultCommand(consultCS2040S);
+        assertTrue(addCS2040SConsult.equals(addCS2040SConsultCopy));
+
+        // different types -> returns false
+        assertFalse(addCS2040SConsult.equals(1));
+
+        // null -> returns false
+        assertFalse(addCS2040SConsult.equals(null));
+
+        // different course -> returns false
+        assertFalse(addCS2040SConsult.equals(addCS2103TConsult));
     }
 
     @Test

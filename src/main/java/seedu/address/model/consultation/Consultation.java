@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import seedu.address.model.course.Course;
 import seedu.address.model.student.Student;
 import seedu.address.model.student.exceptions.DuplicateStudentException;
 
@@ -18,6 +19,7 @@ public class Consultation {
 
     private final Date date;
     private final Time time;
+    private final Course course;
     private final List<Student> students;
 
     /**
@@ -29,10 +31,11 @@ public class Consultation {
      *                 This list can be empty but must not be null.
      * @throws NullPointerException if {@code date} or {@code time} is null.
      */
-    public Consultation(Date date, Time time, List<Student> students) {
-        requireAllNonNull(date, time);
+    public Consultation(Date date, Time time, Course course, List<Student> students) {
+        requireAllNonNull(date, time, course);
         this.date = date;
         this.time = time;
+        this.course = course;
 
         this.students = students != null ? new ArrayList<>(students) : new ArrayList<>();
     }
@@ -48,6 +51,7 @@ public class Consultation {
         requireNonNull(consultation);
         this.date = new Date(consultation.getDate().getValue());
         this.time = new Time(consultation.getTime().getValue());
+        this.course = new Course(consultation.getCourse().toString());
         this.students = new ArrayList<>(consultation.getStudents());
     }
 
@@ -68,6 +72,16 @@ public class Consultation {
     public Time getTime() {
         return time;
     }
+
+    /**
+     * Returns the course the consultation is for.
+     *
+     * @return The course the consultation is for.
+     */
+    public Course getCourse() {
+        return course;
+    }
+
 
     /**
      * Returns an immutable list of students attending the consultation.
@@ -129,17 +143,18 @@ public class Consultation {
         Consultation otherConsultation = (Consultation) other;
         return date.equals(otherConsultation.date)
                 && time.equals(otherConsultation.time)
+                && course.equals(otherConsultation.course)
                 && students.equals(otherConsultation.students);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(date, time, students);
+        return Objects.hash(date, time, course, students);
     }
 
     @Override
     public String toString() {
-        return String.format("Consultation[date=%s, time=%s, students=%s]", date, time, students);
+        return String.format("Consultation[date=%s, time=%s, course=%s, students=%s]", date, time, course, students);
     }
 
     /**
@@ -151,7 +166,7 @@ public class Consultation {
     private void requireAllNonNull(Object... objects) {
         for (Object obj : objects) {
             if (obj == null) {
-                throw new NullPointerException("Fields date and time must be non-null");
+                throw new NullPointerException("Fields date, time and course must be non-null");
             }
         }
     }

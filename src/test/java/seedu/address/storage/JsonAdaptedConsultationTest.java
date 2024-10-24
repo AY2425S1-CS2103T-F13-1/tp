@@ -14,6 +14,7 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.consultation.Consultation;
 import seedu.address.model.consultation.Date;
 import seedu.address.model.consultation.Time;
+import seedu.address.model.course.Course;
 import seedu.address.model.student.Student;
 import seedu.address.testutil.ConsultationBuilder;
 import seedu.address.testutil.StudentBuilder;
@@ -22,9 +23,11 @@ public class JsonAdaptedConsultationTest {
     private static final AddressBook testAddressBook = getTypicalAddressBook();
     private static final String VALID_DATE = "2024-10-22";
     private static final String VALID_TIME = "14:00";
+    private static final String VALID_COURSE = "CS2103T";
     private static final List<JsonAdaptedStudent> VALID_STUDENTS = List.of();
     private static final String INVALID_DATE = "2024-13-32";
     private static final String INVALID_TIME = "25:66";
+    private static final String INVALID_COURSE = "CS2103TTTTTTTTTTT";
 
     @Test
     public void toModelType_validConsultDetails_returnsConsult() throws Exception {
@@ -36,7 +39,7 @@ public class JsonAdaptedConsultationTest {
     @Test
     public void toModelType_invalidDate_throwsIllegalValueException() {
         JsonAdaptedConsultation consult = new JsonAdaptedConsultation(
-                INVALID_DATE, VALID_TIME, VALID_STUDENTS
+                INVALID_DATE, VALID_TIME, VALID_COURSE, VALID_STUDENTS
         );
         String expectedMessage = Date.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, () -> consult.toModelType(testAddressBook));
@@ -45,7 +48,7 @@ public class JsonAdaptedConsultationTest {
     @Test
     public void toModelType_nullDate_throwsIllegalValueException() {
         JsonAdaptedConsultation consult = new JsonAdaptedConsultation(
-                null, VALID_TIME, VALID_STUDENTS
+                null, VALID_TIME, VALID_COURSE, VALID_STUDENTS
         );
         String expectedMessage = String.format(JsonAdaptedConsultation.MISSING_FIELD_MESSAGE_FORMAT,
                 Date.class.getSimpleName());
@@ -55,7 +58,7 @@ public class JsonAdaptedConsultationTest {
     @Test
     public void toModelType_invalidTime_throwsIllegalValueException() {
         JsonAdaptedConsultation consult = new JsonAdaptedConsultation(
-                VALID_DATE, INVALID_TIME, VALID_STUDENTS
+                VALID_DATE, INVALID_TIME, VALID_COURSE, VALID_STUDENTS
         );
         String expectedMessage = Time.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, () -> consult.toModelType(testAddressBook));
@@ -64,10 +67,29 @@ public class JsonAdaptedConsultationTest {
     @Test
     public void toModelType_nullTime_throwsIllegalValueException() {
         JsonAdaptedConsultation consult = new JsonAdaptedConsultation(
-                VALID_DATE, null, VALID_STUDENTS
+                VALID_DATE, null, VALID_COURSE, VALID_STUDENTS
         );
         String expectedMessage = String.format(JsonAdaptedConsultation.MISSING_FIELD_MESSAGE_FORMAT,
                 Time.class.getSimpleName());
+        assertThrows(IllegalValueException.class, expectedMessage, () -> consult.toModelType(testAddressBook));
+    }
+
+    @Test
+    public void toModelType_invalidCourse_throwsIllegalValueException() {
+        JsonAdaptedConsultation consult = new JsonAdaptedConsultation(
+                VALID_DATE, VALID_TIME, INVALID_COURSE, VALID_STUDENTS
+        );
+        String expectedMessage = Course.MESSAGE_CONSTRAINTS;
+        assertThrows(IllegalValueException.class, expectedMessage, () -> consult.toModelType(testAddressBook));
+    }
+
+    @Test
+    public void toModelType_nullCourse_throwsIllegalValueException() {
+        JsonAdaptedConsultation consult = new JsonAdaptedConsultation(
+                VALID_DATE, VALID_TIME, null, VALID_STUDENTS
+        );
+        String expectedMessage = String.format(JsonAdaptedConsultation.MISSING_FIELD_MESSAGE_FORMAT,
+                Course.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, () -> consult.toModelType(testAddressBook));
     }
 
