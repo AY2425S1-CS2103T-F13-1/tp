@@ -31,27 +31,20 @@ class JsonAdaptedLesson {
      * Attempting to use JavaFX's Pair class causes InaccessibleObjectException on GitHub CI.
      * Using a Map is not feasible because there is no map key deserializer available.
      */
-    private final List<Pair<JsonAdaptedStudent, Boolean>> attendanceList;
+    private final List<JsonAdaptedAttendance> attendanceList;;
 
     /**
      * Constructs a {@code JsonAdaptedLesson} with the given lesson details.
      */
     @JsonCreator
     public JsonAdaptedLesson(@JsonProperty("date") String date,
-            @JsonProperty("time") String time,
-            @JsonProperty("students") List<JsonAdaptedStudent> students,
-            @JsonProperty("attendanceList") List<Pair<JsonAdaptedStudent, Boolean>> attendanceList) {
+                            @JsonProperty("time") String time,
+                            @JsonProperty("students") List<JsonAdaptedStudent> students,
+                            @JsonProperty("attendanceList") List<JsonAdaptedAttendance> attendanceList) {
         this.date = date;
         this.time = time;
-        this.students = new ArrayList<>();
-        this.attendanceList = new ArrayList<>();
-        // Null check required because the JsonCreator constructor may be called with null if the fields do not exist
-        if (students != null) {
-            this.students.addAll(students);
-        }
-        if (attendanceList != null) {
-            this.attendanceList.addAll(attendanceList);
-        }
+        this.students = new ArrayList<>(students != null ? students : new ArrayList<>());
+        this.attendanceList = new ArrayList<>(attendanceList != null ? attendanceList : new ArrayList<>());
     }
 
     /**
@@ -62,12 +55,12 @@ class JsonAdaptedLesson {
         time = source.getTime().toString();
         students = new ArrayList<>();
         attendanceList = new ArrayList<>();
-
+    
         for (Student student : source.getStudents()) {
             JsonAdaptedStudent jsonAdaptedStudent = new JsonAdaptedStudent(student);
             boolean attendance = source.getAttendance(student);
             students.add(jsonAdaptedStudent);
-            attendanceList.add(new Pair<>(jsonAdaptedStudent, attendance));
+            attendanceList.add(new JsonAdaptedAttendance(jsonAdaptedStudent, attendance));
         }
     }
 
@@ -130,15 +123,21 @@ class JsonAdaptedLesson {
 
         // The loop only checks using students in the students list, thus ignoring any "extra" entries
         // in the attendanceList.
-        for (JsonAdaptedStudent student : students) {
-            Student modelStudent = student.toModelType();
-            // Check to ensure student data matches an existing student
+        for (JsonAdaptedAttendance jsonAdaptedAttendance : attendanceList) {
+            JsonAdaptedStudent jsonStudent = jsonAdaptedAttendance.getStudent();
+            boolean attendance = jsonAdaptedAttendance.getAttendance();
+    
+            if (jsonStudent == null) {
+                throw new IllegalValueException("Student information is missing.");
+            }
+    
+            Student modelStudent = jsonStudent.toModelType();
             if (!addressBook.hasStudent(modelStudent)) {
                 throw new IllegalValueException(
                         String.format(STUDENT_NOT_FOUND_MESSAGE, modelStudent.getName().fullName));
             }
             modelStudents.add(modelStudent);
-            modelAttendanceList.put(modelStudent, getAttendance(student));
+            modelAttendanceList.put(modelStudent, attendance);
         }
 
         return new Lesson(modelDate, modelTime, modelStudents, modelAttendanceList);
@@ -152,9 +151,9 @@ class JsonAdaptedLesson {
      * @return Boolean representing the student's attendance for this lesson, or false if no entry is found.
      */
     private boolean getAttendance(JsonAdaptedStudent jsonStudent) {
-        for (Pair<JsonAdaptedStudent, Boolean> pair : attendanceList) {
-            if (pair.getKey().equals(jsonStudent)) {
-                return pair.getValue();
+        for (JsonAdaptedAttendance attendance : attendanceList) {
+            if (attendance.getStudent().equals(jsonStudent)) {
+                return attendance.getAttendance();
             }
         }
         return false; // the default attendance is false if data is not found
